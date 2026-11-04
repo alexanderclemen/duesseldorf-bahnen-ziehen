@@ -1,0 +1,5 @@
+www/plan.json
+www/config.json
+history/
+__pycache__/
+*.pyc

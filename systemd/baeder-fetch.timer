@@ -1,0 +1,11 @@
+[Unit]
+Description=Fetch the pool plans every 30 minutes
+
+[Timer]
+OnBootSec=2min
+OnCalendar=*:07/30
+RandomizedDelaySec=120
+Persistent=true
+
+[Install]
+WantedBy=timers.target

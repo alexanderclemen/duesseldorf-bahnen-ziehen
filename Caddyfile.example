@@ -1,0 +1,10 @@
+# Replace the address with your own host name (or ":8080" for plain HTTP in your LAN).
+bahnen.example.org {
+    root * /var/www/baeder
+    encode gzip
+    file_server
+
+    @plan path /plan.json
+    header @plan Cache-Control "no-store"
+    header X-Content-Type-Options "nosniff"
+}

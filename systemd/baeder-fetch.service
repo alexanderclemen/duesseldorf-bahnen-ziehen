@@ -1,0 +1,20 @@
+[Unit]
+Description=Fetch the Belegungsplan of the Düsseldorf pools
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=baeder
+Group=baeder
+ExecStart=/usr/bin/python3 -I /opt/baeder/fetch_baeder.py /var/www/baeder/plan.json
+# sandbox: it may only write its page data and its history
+ProtectSystem=strict
+ReadWritePaths=/var/www/baeder
+# history for the forecast: /var/lib/baeder/history (created by systemd, owned by baeder)
+StateDirectory=baeder
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+TimeoutStartSec=90

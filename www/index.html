@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e3a60">
+<title>Düsseldorf – Bahnen ziehen</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23007eb2'/%3E%3Cpath d='M5 19c3 0 3-2 5.5-2s2.5 2 5.5 2 3-2 5.5-2 2.5 2 5.5 2M5 24c3 0 3-2 5.5-2s2.5 2 5.5 2 3-2 5.5-2 2.5 2 5.5 2' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='20' cy='10' r='3' fill='white'/%3E%3C/svg%3E">
+<style>
+@font-face{font-family:"Jakarta";font-style:normal;font-display:swap;font-weight:200 800;
+  src:url(fonts/plus-jakarta-sans-latin-wght-normal.woff2) format("woff2")}
+:root{
+  --blue:#009fdf; --blue-600:#007bac; --blue-700:#005679; --sky:#007eb2; --pool:#0e3a60;
+  --navy:#003f5e; --navy-2:#002a3c; --red:#e30018;
+  --green:#69b34c; --yellow:#fab733; --orange:#ff6641;
+  --bg:#f1f5f9; --card:#fff; --line:#e2e8f0; --text:#1e293b; --muted:#64748b;
+  --free:#e0f2fe; --busy:#00a0e6;
+  --radius:14px; --shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Jakarta",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;line-height:1.4}
+button{font:inherit;color:inherit}
+
+/* hero: water with a lane rope */
+.hero{position:relative;color:#fff;padding:22px 20px 84px;overflow:hidden;
+  background:
+    radial-gradient(120% 80% at 80% -10%,rgba(0,159,223,.55),transparent 60%),
+    linear-gradient(160deg,#0e3a60 0%,#005679 55%,#007eb2 100%)}
+.hero::before{content:"";position:absolute;inset:0;opacity:.18;pointer-events:none;
+  background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.35) 22px 24px,transparent 24px 48px)}
+.rope{position:absolute;left:-10%;right:-10%;bottom:34px;height:14px;transform:rotate(-2deg);
+  background:repeating-linear-gradient(90deg,#ff5a1f 0 18px,#e43d0c 18px 20px,#ff5a1f 20px 36px,#fff 36px 44px);
+  border-radius:7px;box-shadow:0 3px 8px rgba(0,0,0,.25);opacity:.95}
+.hero-inner{position:relative;max-width:1100px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;font-size:15px;opacity:.95}
+.brand svg{width:28px;height:28px}
+.hero h1{margin:14px 0 4px;font-size:clamp(28px,6vw,44px);font-weight:700;letter-spacing:-.5px}
+.hero p{margin:0;opacity:.85;font-size:15px}
+
+main{max-width:1100px;margin:-60px auto 40px;padding:0 14px;position:relative}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.grid2{display:grid;gap:16px}
+@media(min-width:900px){.grid2{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}}
+
+h2{margin:0 0 12px;font-size:22px;color:var(--sky);font-weight:600;letter-spacing:-.2px}
+.label{font-size:13px;color:var(--muted);margin:0 0 6px}
+
+/* controls */
+.controls{display:grid;gap:14px;margin-bottom:16px}
+.tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));background:#f1f5f9;border-radius:12px;padding:4px;gap:4px}
+.tabs button{border:0;background:transparent;border-radius:9px;padding:8px 8px;text-align:left;cursor:pointer}
+.tabs button{white-space:nowrap}
+.tabs button.fc{outline:1px dashed #94a3b8;outline-offset:-3px}
+.tabs button.fc b,.tabs button.fc span{font-style:italic}
+.tabhint{font-size:12px;color:var(--muted);margin:6px 2px 0}
+.tabs button.nodata{opacity:.55}
+.fcnote{display:flex;gap:8px;align-items:flex-start;background:#f0f9ff;border:1px dashed #7dd3fc;color:#075985;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px}
+.tabs button b{display:block;font-size:13px;font-weight:600;color:var(--muted)}
+.tabs button span{font-size:15px;color:#475569}
+.tabs button[aria-pressed=true]{background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.12)}
+.tabs button[aria-pressed=true] b,.tabs button[aria-pressed=true] span{color:var(--sky)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--sky);border-color:var(--sky);color:#fff}
+.chip.wide[aria-pressed=true]{background:var(--pool);border-color:var(--pool)}
+select{font:inherit;font-size:15px;border:1px solid #cbd5e1;border-radius:10px;padding:8px 34px 8px 12px;background:#fff;
+  appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center}
+
+/* recommendation */
+.pick{border-radius:12px;padding:18px;background:linear-gradient(135deg,#f0f9ff,#fff);border:1px solid #bae6fd;position:relative}
+.pick .when{font-size:14px;color:var(--muted)}
+.pick .where{font-size:clamp(26px,5vw,34px);font-weight:700;color:var(--pool);margin:4px 0 8px;letter-spacing:-.4px}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 11px;font-size:13px;font-weight:600}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.lv-frei{background:#ecf7e7;color:#3f8a26}
+.lv-ruhig{background:#fff5df;color:#a86b00}
+.lv-voll{background:#ffece7;color:#c2391a}
+.lv-zu{background:#f1f5f9;color:#64748b}
+.lanes{display:flex;gap:4px;margin:14px 0 6px;flex-wrap:wrap}
+.lane{width:22px;height:34px;border-radius:5px;background:var(--free);border:1px solid #bae6fd;position:relative}
+.lane.b{background:var(--busy);border-color:var(--busy)}
+.pick .facts{font-size:14px;color:#475569;margin-top:6px}
+.pick .facts b{color:var(--text)}
+.others{margin-top:14px;display:grid;gap:8px}
+.other{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+.other .n{font-weight:600}
+.other small{color:var(--muted)}
+.empty{padding:18px;border-radius:12px;background:#f8fafc;color:var(--muted);font-size:15px}
+a{color:var(--sky)}
+
+/* best windows */
+.wins{display:grid;gap:8px}
+.win{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 12px;border-radius:10px;
+  border:1px solid var(--line);cursor:pointer;background:#fff;text-align:left;width:100%}
+.win:hover{border-color:#7dd3fc;background:#f8fdff}
+.win .t{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;white-space:nowrap}
+.win .p{font-size:14px}
+.win .p small{display:block;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%}
+
+/* timetable */
+.plan{margin-top:16px}
+.ttwrap{overflow-x:auto;margin:0 -4px;padding:0 4px}
+.tt{display:grid;grid-template-columns:44px repeat(var(--cols),minmax(56px,1fr));gap:0 6px;position:relative;min-width:calc(44px + var(--cols) * 62px)}
+.tt .head{font-size:13px;font-weight:600;color:var(--pool);text-align:center;padding:0 2px 8px;line-height:1.2}
+.tt .head small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+details.card{margin-bottom:16px;padding:0}
+details.card summary{cursor:pointer;list-style:none;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary b{font-size:17px;color:var(--sky);font-weight:600}
+details.card summary span{font-size:13px;color:var(--muted);text-align:right}
+details.card[open] summary{border-bottom:1px solid var(--line)}
+.poollist{padding:10px 14px 16px;display:grid;gap:6px}
+.prow{display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;align-items:center;padding:7px 8px;border-radius:9px;border:1px solid var(--line);font-size:14px}
+.prow.on{border-color:#7dd3fc;background:#f8fdff}
+.prow .nm small{display:block;color:var(--muted);font-size:12px}
+.prow input{width:18px;height:18px;accent-color:var(--sky)}
+.prow button{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:28px;cursor:pointer;font-size:14px;color:#475569}
+.prow button:disabled{opacity:.3;cursor:default}
+.prow .rk{display:inline-block;min-width:20px;font-weight:700;color:var(--pool)}
+.pooltools{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 16px}
+.axis{position:relative}
+.axis span{position:absolute;right:6px;font-size:11px;color:var(--muted);transform:translateY(-50%);font-variant-numeric:tabular-nums}
+.col{position:relative;border-radius:8px;overflow:hidden;background:#f8fafc}
+.cell{position:absolute;left:0;right:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:600;color:#0c4a6e;font-variant-numeric:tabular-nums}
+.cell.closed{cursor:default;background:repeating-linear-gradient(135deg,#dbe4ee 0 4px,#f1f5f9 4px 8px)!important;color:transparent}
+.cell.off{cursor:default;opacity:.28;color:#0c4a6e}
+.cell.hr{border-top:1px solid rgba(255,255,255,.9)}
+.selbox{position:absolute;left:2px;right:2px;border:2.5px solid var(--pool);border-radius:6px;z-index:2;pointer-events:none;box-shadow:0 0 0 3px rgba(255,255,255,.7)}
+.now{position:absolute;left:44px;right:0;height:0;border-top:2px solid var(--red);z-index:3;pointer-events:none}
+.now::before{content:"";position:absolute;left:-5px;top:-6px;width:10px;height:10px;border-radius:50%;background:var(--red)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:#475569}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.tip{position:fixed;z-index:20;background:var(--navy-2);color:#fff;border-radius:10px;padding:10px 12px;font-size:13px;max-width:260px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);pointer-events:none;display:none}
+.tip b{display:block;margin-bottom:4px}
+
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+.warn{background:#fff5df;color:#7a4d00;border-radius:10px;padding:10px 12px;font-size:14px;margin-bottom:14px;display:none}
+footer{background:var(--navy);color:#cfe3ee;font-size:13px;padding:22px 20px 30px;text-align:center}
+footer a{color:#fff}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="rgba(255,255,255,.16)"/><path d="M5 19c3 0 3-2 5.5-2s2.5 2 5.5 2 3-2 5.5-2 2.5 2 5.5 2M5 24c3 0 3-2 5.5-2s2.5 2 5.5 2 3-2 5.5-2 2.5 2 5.5 2" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="20" cy="10" r="3" fill="#fff"/></svg>
+      Düsseldorf – Bahnen ziehen
+    </div>
+    <h1>Wohin schwimmen?</h1>
+    <p id="subtitle">Freie Bahnen in den Düsseldorfer Bädern</p>
+  </div>
+  <div class="rope" aria-hidden="true"></div>
+</header>
+
+<main>
+  <div id="warn" class="warn"></div>
+  <details class="card" id="poolbox">
+    <summary><b>Bäder</b><span id="poolsum"></span></summary>
+    <div class="poollist" id="poollist"></div>
+    <div class="pooltools">
+      <button class="chip" id="pAll">Alle Schwimmerbecken</button>
+      <button class="chip" id="pReset">Standard</button>
+    </div>
+  </details>
+  <div class="grid2">
+    <section class="card">
+      <div class="controls">
+        <div>
+          <p class="label">Tag</p>
+          <div class="tabs" id="days"></div>
+          <p class="tabhint" id="tabhint" hidden>Gestrichelt: Prognose aus vergangenen Wochen. Der echte Plan gilt für heute und die nächsten zwei Tage.</p>
+        </div>
+        <div class="row">
+          <div>
+            <p class="label">Los um</p>
+            <select id="start" aria-label="Startzeit"></select>
+          </div>
+          <div>
+            <p class="label">Dauer</p>
+            <div class="chips" id="dur"></div>
+          </div>
+        </div>
+        <div id="lenbox">
+          <p class="label">Bahn</p>
+          <div class="chips" id="len">
+            <button class="chip wide" data-v="25">Egal</button>
+            <button class="chip wide" data-v="50">nur 50-m-Bahnen</button>
+          </div>
+        </div>
+        <div id="whobox">
+          <p class="label">Damen-/Herrenschwimmen (Münster-Therme, samstags)</p>
+          <div class="chips" id="who">
+            <button class="chip wide" data-v="herren">Herren</button>
+            <button class="chip wide" data-v="damen">Damen</button>
+          </div>
+        </div>
+      </div>
+      <div id="pick"></div>
+    </section>
+
+    <section class="card">
+      <h2 id="winTitle">Gute Zeiten</h2>
+      <div class="wins" id="wins"></div>
+      <p class="note">Ruhig heißt: im Schnitt mindestens die Hälfte der Bahnen frei, frei: mindestens drei Viertel. Bei gleicher Ruhe gewinnt das Bad, das unter „Bäder“ weiter oben steht. Letzter Einlass eine Stunde vor Schließung, raus aus dem Wasser 15 min vorher.</p>
+    </section>
+  </div>
+
+  <section class="card plan">
+    <h2 id="planTitle">Belegungsplan</h2>
+    <div class="ttwrap"><div class="tt" id="tt"></div></div>
+    <div class="legend">
+      <span><i style="background:var(--free);border:1px solid #bae6fd"></i>Frei</span>
+      <span><i style="background:var(--busy)"></i>Belegt</span>
+      <span><i style="background:repeating-linear-gradient(135deg,#dbe4ee 0 3px,#f1f5f9 3px 6px)"></i>Geschlossen / nicht öffentlich</span>
+      <span id="leg25" hidden><i style="background:var(--busy);opacity:.28"></i>blass: keine 50-m-Bahn</span>
+    </div>
+    <p class="note" id="stand"></p>
+  </section>
+</main>
+<div class="tip" id="tip"></div>
+<footer>
+  Daten aus den öffentlichen Belegungsplänen der Bädergesellschaft Düsseldorf:
+  <span id="links"></span>. Ohne Gewähr – kurzfristige Änderungen stehen nur dort.
+</footer>
+
+<script>
+"use strict";
+const SLOT = 15, LEVEL = {frei:2, ruhig:1, voll:0};
+const LV_TEXT = {frei:"frei", ruhig:"ruhig", voll:"voll", zu:"geschlossen"};
+const LV_COLOR = {frei:"var(--green)", ruhig:"var(--yellow)", voll:"var(--orange)"};
+const store = {
+  get(k, d){ try { const v = localStorage.getItem("bf-"+k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem("bf-"+k, JSON.stringify(v)); } catch(e){} }
+};
+const state = { data:null, config:null, sel:[], day:0, start:null, dur:store.get("dur", 60), len:store.get("len", "25"), who:store.get("who", "herren") };
+/* Special sessions from the opening-hours pages; the Belegungsplan does not show them.
+   https://www.baeder-duesseldorf.de/oeffnungszeiten/hallenbaeder/muenster-therme/ (read 2026-11-04) */
+const ONLY_TEXT = {damen:"nur Damen", herren:"nur Herren", senioren:"nur Senioren", none:"geschlossen"};
+const RULES = [
+  { pool:"muenstertherme", dow:6, start:"17:30", end:"19:00",           // Saturday
+    who: (day, m) => { const w = Math.ceil(day / 7); return w === 3 ? "herren" : w === 5 ? "none" : "damen"; } },
+  // Monday: the pool is open only for seniors, 11-14 (normal hours are Tuesday to Friday)
+  { pool:"muenstertherme", dow:1, start:"00:00", end:"24:00", who: (day, m) => m >= 11*60 && m < 14*60 ? "senioren" : "none" },
+];
+const LAST_ENTRY = 60, OUT_OF_WATER = 15;   // minutes before closing (all pools)
+
+const $ = id => document.getElementById(id);
+const toMin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
+const fmt = m => String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+function berlinNow(){
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Berlin",year:"numeric",month:"2-digit",
+    day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  return {date:`${p.year}-${p.month}-${p.day}`, min:Number(p.hour)*60+Number(p.minute)};
+}
+function level(frac){ return frac >= .75 ? "frei" : frac >= .5 ? "ruhig" : "voll"; }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- prepare the data: one entry per pool, day and quarter hour ---------- */
+function prepare(raw){
+  const dates = raw.pools[0].days.map(d => ({date:d.date, label:d.label, fc:!!d.forecast,
+    samples: Math.max(...raw.pools.map(p => (p.days.find(x => x.date === d.date) || {}).samples || 0))}));
+  const pools = raw.pools.map(p => {
+    const closed = new Set((p.closed_dates||[]).map(c => typeof c === "string" ? c : (c && (c.date||c.datum)) || ""));
+    const days = {};
+    for (const d of p.days){
+      const map = new Map();
+      const dayOpen = String(d.status||"").toLowerCase().startsWith("geöffnet") && !closed.has(d.date);
+      for (const s of d.slots){
+        const m = toMin(s.t);
+        const per = d.periods.find(q => q.open && m >= toMin(q.start) && m < toMin(q.end));
+        const fc = !!d.forecast;
+        const busy = fc ? (s.often || []).map(name => ({name})) : s.lanes.filter(Boolean);
+        const n = fc ? s.n : (s.lanes.length || p.lanes);
+        const free = fc ? s.free : n - busy.length;
+        const dt = new Date(d.date + "T12:00:00Z");
+        const rule = RULES.find(r => r.pool === p.slug && r.dow === dt.getUTCDay() && m >= toMin(r.start) && m < toMin(r.end));
+        map.set(m, { pub: dayOpen && !!per && free !== null, mode: per ? per.mode : null, fc,
+          free, n, busy, seen: s.seen, only: rule ? rule.who(dt.getUTCDate(), m) : null });
+      }
+      // end of each stretch of public opening: last entry and leaving the water depend on it
+      const ms = [...map.keys()].sort((a,b) => b - a);
+      let runEnd = null;
+      for (const m of ms){
+        const s = map.get(m);
+        if (!s.pub){ runEnd = null; continue; }
+        if (runEnd === null || !map.get(m + SLOT) || !map.get(m + SLOT).pub) runEnd = m + SLOT;
+        s.runEnd = runEnd;
+      }
+      days[d.date] = { map, periods:d.periods, fc:!!d.forecast, samples:d.samples || 0 };
+    }
+    return {...p, days};
+  });
+  return {dates, pools, fetched:new Date(raw.fetched_at)};
+}
+function usable(pool, s){
+  if (!s || !s.pub) return false;
+  if (s.only && s.only !== state.who) return false;
+  if (state.len === "50") return s.mode === "50";
+  return true;
+}
+/* a swim of `dur` minutes starting at `m`: null if the pool is not usable the whole time */
+function windowAt(pool, date, m){
+  const d = pool.days[date]; if (!d) return null;
+  const s0 = d.map.get(m);
+  if (!s0 || !s0.runEnd || m > s0.runEnd - LAST_ENTRY || m + state.dur > s0.runEnd - OUT_OF_WATER) return null;
+  let sum = 0, minFree = Infinity, n = 0, lanes = 0;
+  for (let t = m; t < m + state.dur; t += SLOT){
+    const s = d.map.get(t);
+    if (!usable(pool, s)) return null;
+    sum += s.free / s.n; minFree = Math.min(minFree, s.free); lanes = s.n; n++;
+  }
+  const frac = sum / n;
+  return { pool, m, frac, lv: level(frac), minFree, lanes, first: d.map.get(m) };
+}
+function ranked(date, m){
+  return pools().map(p => windowAt(p, date, m)).filter(Boolean)
+    .sort((a,b) => LEVEL[b.lv] - LEVEL[a.lv] || a.pool.pref - b.pool.pref);
+}
+function allStarts(date){
+  const set = new Set();
+  for (const p of pools()){ const d = p.days[date]; if (d) for (const m of d.map.keys()) set.add(m); }
+  return [...set].sort((a,b)=>a-b);
+}
+/* how long the pool stays at least this calm after the start */
+function calmUntil(w, date){
+  const d = w.pool.days[date]; const need = LEVEL[w.lv];
+  let t = w.m; const stop = w.first.runEnd - OUT_OF_WATER;
+  while (t < stop){
+    const s = d.map.get(t);
+    if (!usable(w.pool, s) || LEVEL[level(s.free/s.n)] < need) break;
+    t += SLOT;
+  }
+  return Math.min(t, stop);
+}
+
+/* ---------- rendering ---------- */
+function render(){
+  renderPools();
+  const {dates} = state.data;
+  const now = berlinNow();
+  const date = dates[state.day].date;
+  const isToday = date === now.date;
+  const starts = allStarts(date).filter(m => !isToday || m + SLOT > now.min);
+
+  // day tabs
+  $("days").innerHTML = dates.map((d,i) => `<button aria-pressed="${i===state.day}" data-i="${i}"
+      class="${d.fc ? "fc" : ""} ${d.fc && !d.samples ? "nodata" : ""}" title="${d.fc ? (d.samples ? "Prognose aus " + d.samples + " Woche(n)" : "noch keine Erfahrungswerte") : "Belegungsplan"}">
+    <b>${d.date===now.date ? "Heute" : i===1 ? "Morgen" : esc(d.label.slice(0,2))}</b><span>${esc(d.label.slice(4,10))}</span></button>`).join("");
+  $("tabhint").hidden = !dates.some(d => d.fc);
+
+  // start time select: "Jetzt" first on today
+  if (state.start === null || !starts.includes(state.start)) state.start = starts.length ? starts[0] : null;
+  $("start").innerHTML = starts.map((m,i) =>
+    `<option value="${m}" ${m===state.start?"selected":""}>${isToday && i===0 ? "Jetzt ("+fmt(m)+")" : fmt(m)+" Uhr"}</option>`).join("")
+    || `<option>–</option>`;
+
+  $("dur").innerHTML = [45,60,90,120].map(v => `<button class="chip" data-v="${v}" aria-pressed="${v===state.dur}">${v} min</button>`).join("");
+  for (const b of $("len").children) b.setAttribute("aria-pressed", b.dataset.v === state.len);
+  for (const b of $("who").children) b.setAttribute("aria-pressed", b.dataset.v === state.who);
+  $("leg25").hidden = state.len !== "50";
+
+  renderPick(date, starts, isToday);
+  renderWins(date, starts, isToday);
+  renderPlan(date, isToday, now);
+}
+
+function lanesHtml(s){
+  return `<div class="lanes" aria-label="${s.free} von ${s.n} Bahnen frei">` +
+    Array.from({length:s.n}, (_,i) => `<span class="lane ${i < s.n - s.free ? "b" : ""}"></span>`).join("") + `</div>`;
+}
+const WDN = {Mo:"Montag", Di:"Dienstag", Mi:"Mittwoch", Do:"Donnerstag", Fr:"Freitag", Sa:"Samstag", So:"Sonntag"};
+function fcInfo(){
+  const d = state.data.dates[state.day];
+  if (!d.fc) return "";
+  const wd = WDN[d.label.slice(0,2)] || "Wochentag";
+  if (!d.samples) return `<div class="fcnote">ⓘ Für diesen Tag gibt es den Belegungsplan noch nicht, und es gibt noch keine Erfahrungswerte. Der Server sammelt die Pläne seit der Einrichtung; ab einer Woche erscheint hier eine Prognose.</div>`;
+  return `<div class="fcnote">ⓘ Prognose: ${d.samples === 1 ? "Werte vom letzten " + wd : "Durchschnitt der letzten " + d.samples + " " + wd + "e"}. Der echte Plan erscheint drei Tage vorher.</div>`;
+}
+const nf = s => s.fc ? "~" + Math.round(s.free) : s.free;
+function renderPick(date, starts, isToday){
+  const el = $("pick");
+  const info = fcInfo();
+  if (state.data.dates[state.day].fc && !state.data.dates[state.day].samples){ el.innerHTML = info; return; }
+  if (state.start === null){
+    el.innerHTML = `<div class="empty">${isToday ? "Für heute ist nichts mehr offen." : "An diesem Tag ist nichts offen."} Schau beim nächsten Tag.</div>`;
+    return;
+  }
+  const opts = ranked(date, state.start);
+  const whenTxt = (isToday && state.start === starts[0] ? "Jetzt" : "Um " + fmt(state.start) + " Uhr") + ` · ${state.dur} min`;
+  if (!opts.length){
+    const later = bestWindows(date, starts).find(w => w.m > state.start);
+    el.innerHTML = `<div class="empty"><b>${whenTxt}:</b> ${state.len==="50" ? "keine 50-m-Bahn offen" : "kein Bad offen"} für die ganze Zeit.
+      ${later ? `<br>Nächste Möglichkeit: <a href="#" data-go="${later.m}">${fmt(later.m)} Uhr, ${esc(later.pool.label)}</a>` : ""}</div>`;
+    return;
+  }
+  const w = opts[0], s = w.first, until = calmUntil(w, date);
+  const fc = s.fc;
+  const busyNames = [...new Set(s.busy.map(b => b.name))];
+  const better = w.lv !== "frei" ? bestWindows(date, starts).find(x => x.m > state.start && x.lv === "frei") : null;
+  el.innerHTML = info + `<div class="pick">
+      <div class="when">${whenTxt}${fc ? " · erwartet" : ""}</div>
+      <div class="where">${esc(w.pool.label)}</div>
+      <span class="badge lv-${w.lv}">${LV_TEXT[w.lv]}</span>
+      ${w.first.mode ? `<span class="badge lv-zu" style="margin-left:6px">${w.first.mode} m</span>` : ""}
+      ${w.first.only ? `<span class="badge lv-zu" style="margin-left:6px">${ONLY_TEXT[w.first.only].replace("nur ","")}schwimmen</span>` : ""}
+      ${lanesHtml({free:Math.round(s.free), n:s.n})}
+      <div class="facts"><b>${nf(s)} von ${s.n}</b> Bahnen frei beim Start${fc ? " (erwartet)" : ""}, schlimmstenfalls ${fc ? "~" + Math.round(w.minFree) : w.minFree} während deiner ${state.dur} min.
+        ${until > w.m + SLOT ? `Bleibt so bis <b>${fmt(until)}</b>.` : ""}
+        ${busyNames.length ? `<br>${fc ? "Meist belegt durch" : "Belegt durch"}: ${busyNames.map(esc).join(", ")}` : ""}</div>
+      ${better ? `<div class="facts" style="margin-top:8px">Ganz frei wird es um <a href="#" data-go="${better.m}">${fmt(better.m)} Uhr in ${esc(better.pool.label)}</a>.</div>` : ""}
+    </div>
+    <div class="others">${opts.slice(1).map(o => `<div class="other"><div><span class="n">${esc(o.pool.label)}</span><br>
+      <small>${nf(o.first)} von ${o.first.n} Bahnen frei${o.first.mode ? " · "+o.first.mode+" m" : ""}</small></div>
+      <span class="badge lv-${o.lv}">${LV_TEXT[o.lv]}</span></div>`).join("")}
+    ${pools().filter(p => !opts.some(o => o.pool === p)).map(p => `<div class="other"><div><span class="n">${esc(p.label)}</span><br>
+      <small>${state.len==="50" ? "keine 50-m-Bahn" : "nicht offen"} für die ganze Zeit</small></div><span class="badge lv-zu">–</span></div>`).join("")}
+    </div>`;
+}
+/* ---------- choice of pools and their order ---------- */
+function pools(){
+  const byId = new Map(state.data.pools.map(p => [p.id, p]));
+  const sel = state.sel.map(id => byId.get(id)).filter(Boolean);
+  // name: the bath alone, unless two pools of the same bath are chosen
+  return sel.map((p, i) => Object.assign(p, {pref: i + 1,
+    label: sel.filter(q => q.slug === p.slug).length > 1 ? p.site + " · " + p.pool : p.site}));
+}
+function defaultSel(){
+  const ids = new Set(state.data.pools.map(p => p.id));
+  const fromConfig = (state.config.pools || []).filter(id => ids.has(id));
+  return fromConfig.length ? fromConfig : state.data.pools.filter(p => p.default).map(p => p.id);
+}
+function initSel(){
+  const ids = new Set(state.data.pools.map(p => p.id));
+  const saved = store.get("sel", null);
+  state.sel = Array.isArray(saved) ? saved.filter(id => ids.has(id)) : defaultSel();
+  if (!state.sel.length) state.sel = defaultSel();
+}
+function saveSel(){ store.set("sel", state.sel); render(); }
+function renderPools(){
+  const sel = pools(), off = state.data.pools.filter(p => !state.sel.includes(p.id));
+  const row = (p, on, i) => `<div class="prow ${on ? "on" : ""}">
+      <input type="checkbox" data-tog="${esc(p.id)}" ${on ? "checked" : ""} aria-label="${esc(p.name)}">
+      <span class="nm">${on ? `<span class="rk">${i + 1}.</span>` : ""}${esc(p.site)}<small>${esc(p.pool)} · ${p.lanes} Bahnen</small></span>
+      <button data-up="${esc(p.id)}" ${!on || i === 0 ? "disabled" : ""} aria-label="nach oben">↑</button>
+      <button data-down="${esc(p.id)}" ${!on || i === sel.length - 1 ? "disabled" : ""} aria-label="nach unten">↓</button></div>`;
+  $("poollist").innerHTML = sel.map((p, i) => row(p, true, i)).join("") + off.map(p => row(p, false, 0)).join("");
+  $("poolsum").textContent = sel.length ? sel.slice(0, 3).map(p => p.site).join(", ") + (sel.length > 3 ? ` und ${sel.length - 3} weitere` : "") : "keins gewählt";
+  $("subtitle").textContent = sel.length && sel.length <= 4 ? sel.map(p => p.site).join(" · ") : "Freie Bahnen in den Düsseldorfer Bädern";
+  const sites = [...new Map(sel.map(p => [p.slug, p])).values()];
+  $("links").innerHTML = sites.map(p => `<a href="${esc(p.url)}" rel="noopener">${esc(p.site)}</a>`).join(", ") || "baeder-duesseldorf.de";
+  // options that only matter for some pools
+  const has50 = sel.some(p => Object.values(p.days).some(d => d.periods.some(q => q.mode === "50")));
+  $("lenbox").hidden = !has50; if (!has50 && state.len === "50") state.len = "25";
+  $("whobox").hidden = !sel.some(p => RULES.some(r => r.pool === p.slug && r.dow === 6));
+}
+
+/* best option for every start time, merged into windows */
+function bestWindows(date, starts){
+  const out = [];
+  for (const m of starts){
+    const b = ranked(date, m)[0];
+    if (!b) continue;
+    const last = out[out.length-1];
+    if (last && last.pool === b.pool && last.lv === b.lv && last.lastStart + SLOT === m){ last.lastStart = m; last.fracs.push(b.frac); }
+    else out.push({ m, lastStart:m, pool:b.pool, lv:b.lv, fracs:[b.frac] });
+  }
+  return out;
+}
+function renderWins(date, starts, isToday){
+  const wins = bestWindows(date, starts).filter(w => w.lv !== "voll");
+  const dd = state.data.dates[state.day];
+  $("winTitle").textContent = "Gute Zeiten " + (isToday ? "heute" : dd.label.split(",")[0]) + (dd.fc ? " (Prognose)" : "");
+  if (dd.fc && !dd.samples){ $("wins").innerHTML = `<div class="empty">Noch keine Erfahrungswerte für diesen Tag.</div>`; return; }
+  if (!wins.length){ $("wins").innerHTML = `<div class="empty">Keine ruhige Zeit${isToday ? " mehr" : ""} an diesem Tag${state.len==="50" ? " auf 50 m" : ""}.</div>`; return; }
+  $("wins").innerHTML = wins.map(w => {
+    const end = w.lastStart + state.dur;
+    const avg = w.fracs.reduce((a,b)=>a+b,0)/w.fracs.length;
+    return `<button class="win" data-go="${w.m}">
+      <span class="dot" style="background:${LV_COLOR[w.lv]}"></span>
+      <span class="p"><span class="t">${fmt(w.m)}–${fmt(end)}</span> · ${esc(w.pool.label)}
+        <small>Start bis ${fmt(w.lastStart)} möglich · im Schnitt ${Math.round(avg*100)} % der Bahnen frei</small></span>
+      <span class="badge lv-${w.lv}">${LV_TEXT[w.lv]}</span></button>`;
+  }).join("");
+}
+
+function renderPlan(date, isToday, now){
+  const ps = pools();
+  let lo = Infinity, hi = -Infinity;
+  for (const p of ps){ const d = p.days[date]; if (!d) continue;
+    for (const m of d.map.keys()){ lo = Math.min(lo, m); hi = Math.max(hi, m + SLOT); } }
+  if (!isFinite(lo)){ $("tt").innerHTML = `<div class="empty">${state.data.dates[state.day].fc ? "Noch keine Erfahrungswerte für diesen Tag." : "Kein Plan für diesen Tag."}</div>`; renderStand(); return; }
+  lo = Math.floor(lo/60)*60; hi = Math.ceil(hi/60)*60;
+  const PX = 11, H = (hi - lo) / SLOT * PX;
+  const tt = $("tt"); tt.style.setProperty("--cols", ps.length);
+  if (!ps.length){ $("tt").innerHTML = `<div class="empty">Wähle oben unter „Bäder“ mindestens ein Becken.</div>`; renderStand(); return; }
+  const multi = new Set(ps.filter(p => ps.filter(q => q.slug === p.slug).length > 1).map(p => p.id));
+  let html = `<div></div>` + ps.map(p => `<div class="head">${esc(p.site)}<small>${multi.has(p.id) ? esc(p.pool) + " · " : ""}${p.lanes} Bahnen</small></div>`).join("");
+  html += `<div class="axis" style="height:${H}px">` +
+    Array.from({length:(hi-lo)/60+1}, (_,i) => `<span style="top:${i*60/SLOT*PX}px">${fmt(lo+i*60)}</span>`).join("") + `</div>`;
+  const top = ranked(date, state.start ?? -1)[0];
+  for (const p of ps){
+    const d = p.days[date];
+    let cells = "";
+    for (let m = lo; m < hi; m += SLOT){
+      const s = d && d.map.get(m);
+      const y = (m - lo) / SLOT * PX;
+      let cls = "cell", style = `top:${y}px;height:${PX}px;`, label = "";
+      if (!s || !s.pub) cls += " closed";
+      else {
+        if (!usable(p, s)) cls += " off";
+        const busy = 1 - s.free / s.n;
+        // mix from light "frei" to the site's "belegt" blue
+        style += `background:color-mix(in srgb, var(--busy) ${Math.round(Math.pow(busy,.7)*100)}%, var(--free));` + (busy > .55 ? "color:#fff;" : "");
+        if (s.only && s.only !== state.who){ if (m % 60 === 0 || (d.map.get(m - SLOT) || {}).only !== s.only) label = ONLY_TEXT[s.only]; }
+        else if (m % 60 === 0) label = !usable(p, s) && s.mode === "25" ? "25 m" : `${nf(s)}/${s.n}`;
+      }
+      if (m % 60 === 0) cls += " hr";
+      cells += `<div class="${cls}" style="${style}" data-p="${esc(p.id)}" data-m="${m}">${label}</div>`;
+    }
+    if (top && top.pool === p) cells += `<div class="selbox" style="top:${(state.start-lo)/SLOT*PX}px;height:${state.dur/SLOT*PX}px"></div>`;
+    html += `<div class="col" style="height:${H}px">${cells}</div>`;
+  }
+  if (isToday && now.min >= lo && now.min <= hi) html += `<div class="now" id="nowline"></div>`;
+  tt.innerHTML = html;
+  const nl = $("nowline");
+  if (nl){ const col = tt.querySelector(".col"); nl.style.top = (col.offsetTop + (now.min-lo)/SLOT*PX) + "px"; }
+  renderStand();
+}
+function renderStand(){
+  const f = state.data.fetched;
+  $("planTitle").textContent = state.data.dates[state.day].fc ? "Erwartete Belegung" : "Belegungsplan";
+  $("stand").textContent = "Stand der Daten: " + f.toLocaleString("de-DE",{timeZone:"Europe/Berlin",weekday:"short",hour:"2-digit",minute:"2-digit"}) + " Uhr. Tippe auf eine Zeit, um dort zu starten.";
+  const age = (Date.now() - f.getTime())/36e5;
+  $("warn").style.display = age > 2 ? "block" : "none";
+  $("warn").textContent = age > 2 ? `Die Daten sind ${Math.round(age)} Stunden alt – das Abrufen auf dem Server klappt gerade nicht.` : "";
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", e => {
+  const day = e.target.closest("#days button");
+  if (day){ state.day = Number(day.dataset.i); state.start = null; render(); return; }
+  const dur = e.target.closest("#dur .chip");
+  if (dur){ state.dur = Number(dur.dataset.v); store.set("dur", state.dur); render(); return; }
+  const len = e.target.closest("#len .chip");
+  if (len){ state.len = len.dataset.v; store.set("len", state.len); render(); return; }
+  const who = e.target.closest("#who .chip");
+  if (who){ state.who = who.dataset.v; store.set("who", state.who); render(); return; }
+  const go = e.target.closest("[data-go]");
+  if (go){ e.preventDefault(); state.start = Number(go.dataset.go); render(); $("pick").scrollIntoView({behavior:"smooth", block:"nearest"}); return; }
+  const cell = e.target.closest(".cell:not(.closed):not(.off)");
+  if (cell){ state.start = Number(cell.dataset.m); render(); $("pick").scrollIntoView({behavior:"smooth", block:"nearest"}); }
+});
+$("start").addEventListener("change", e => { state.start = Number(e.target.value); render(); });
+$("poollist").addEventListener("click", e => {
+  const t = e.target.closest("[data-tog],[data-up],[data-down]"); if (!t) return;
+  e.stopPropagation();
+  const sel = state.sel;
+  if (t.dataset.tog){ const id = t.dataset.tog; state.sel = sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]; }
+  else { const id = t.dataset.up || t.dataset.down, i = sel.indexOf(id), j = t.dataset.up ? i - 1 : i + 1;
+    if (i < 0 || j < 0 || j >= sel.length) return; [sel[i], sel[j]] = [sel[j], sel[i]]; }
+  saveSel();
+});
+$("pAll").addEventListener("click", e => { e.preventDefault(); const lane = state.data.pools.filter(p => p.default).map(p => p.id);
+  state.sel = [...state.sel.filter(id => lane.includes(id)), ...lane.filter(id => !state.sel.includes(id))]; saveSel(); });
+$("pReset").addEventListener("click", e => { e.preventDefault(); state.sel = defaultSel(); saveSel(); });
+
+const tip = $("tip");
+document.addEventListener("pointermove", e => {
+  const c = e.target.closest(".cell");
+  if (!c || e.pointerType === "touch"){ tip.style.display = "none"; return; }
+  const p = pools().find(x => x.id === c.dataset.p), m = Number(c.dataset.m);
+  const s = p.days[state.data.dates[state.day].date]?.map.get(m);
+  let body;
+  if (!s || !s.pub) body = "geschlossen / nicht öffentlich";
+  else {
+    const names = {}; for (const b of s.busy) names[b.name] = (names[b.name]||0) + 1;
+    body = (s.only ? ONLY_TEXT[s.only] + "<br>" : "") + `${nf(s)} von ${s.n} Bahnen frei${s.fc ? " (Durchschnitt aus " + s.seen + " Woche(n))" : ""}${s.mode ? " · "+s.mode+" m" : ""}` +
+      (s.fc ? (s.busy.length ? "<br>meist: " + s.busy.map(b => esc(b.name)).join(", ") : "")
+            : Object.entries(names).map(([n,k]) => `<br>${k}× ${esc(n)}`).join(""));
+  }
+  tip.innerHTML = `<b>${esc(p.label)} · ${fmt(m)}</b>${body}`;
+  tip.style.display = "block";
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - 270) + "px";
+  tip.style.top = (e.clientY + 14) + "px";
+});
+
+async function load(){
+  try {
+    const r = await fetch("plan.json?ts=" + Date.now(), {cache:"no-store"});
+    if (!r.ok) throw new Error(r.status);
+    const raw = await r.json();
+    if (!state.config){
+      state.config = {};
+      try { const c = await fetch("config.json", {cache:"no-store"}); if (c.ok) state.config = await c.json(); } catch(e){}
+    }
+    state.data = prepare(raw);
+    initSel();
+    const today = berlinNow().date;
+    const i = state.data.dates.findIndex(d => d.date === today);
+    if (state.day === 0 && i > 0) state.day = i;
+    render();
+  } catch(err){
+    $("warn").style.display = "block";
+    $("warn").textContent = "Der Plan konnte nicht geladen werden (" + err.message + ").";
+  }
+}
+load();
+setInterval(load, 10*60*1000);
+setInterval(() => state.data && render(), 60*1000);
+</script>
+</body>
+</html>
