@@ -1,3 +1,4 @@
 {
-  "pools": ["muenstertherme:15", "schwimm-in-bilk:6", "rheinbad-50:12"]
+  "pools": ["muenstertherme:15", "schwimm-in-bilk:6", "rheinbad-50:12"],
+  "data_url": "https://alexanderclemen.github.io/duesseldorf-bahnen-ziehen/plan.json"
 }

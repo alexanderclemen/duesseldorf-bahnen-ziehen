@@ -86,6 +86,13 @@ Eine feste Vorauswahl für alle, die deine Installation öffnen, legst du mit `w
 (siehe `www/config.example.json`). Die Kennungen haben die Form `standort:becken-id` und stehen in
 `plan.json` unter `pools[].id`.
 
+## Auf einer eigenen Website einbinden
+
+Die Seite ist eine einzige statische Datei. Kopiere `www/index.html` und `www/fonts/` in einen Ordner
+deiner Website und lege daneben eine `config.json` mit `data_url` an (siehe
+`www/config.example.json`). Die Seite holt sich die Daten dann von der GitHub-Seite dieses Projekts,
+und deine Website braucht keinen eigenen Abruf.
+
 ## Bitte fair abrufen
 
 Die Pläne ändern sich selten. Bitte ruf sie nicht öfter als alle 30 Minuten ab, wie es der Timer

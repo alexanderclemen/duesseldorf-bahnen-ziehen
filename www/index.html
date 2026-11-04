@@ -228,6 +228,7 @@ footer a{color:#fff}
 <footer>
   Daten aus den öffentlichen Belegungsplänen der Bädergesellschaft Düsseldorf:
   <span id="links"></span>. Ohne Gewähr – kurzfristige Änderungen stehen nur dort.
+  <br>Kein Angebot der Bädergesellschaft. Code: <a href="https://github.com/alexanderclemen/duesseldorf-bahnen-ziehen" rel="noopener">GitHub</a>.
 </footer>
 
 <script>
@@ -593,13 +594,15 @@ document.addEventListener("pointermove", e => {
 
 async function load(){
   try {
-    const r = await fetch("plan.json?ts=" + Date.now(), {cache:"no-store"});
-    if (!r.ok) throw new Error(r.status);
-    const raw = await r.json();
     if (!state.config){
       state.config = {};
       try { const c = await fetch("config.json", {cache:"no-store"}); if (c.ok) state.config = await c.json(); } catch(e){}
     }
+    // data_url: load the plan from elsewhere, e.g. the GitHub Pages copy of this project
+    const url = state.config.data_url || "plan.json";
+    const r = await fetch(url + (url.includes("?") ? "&" : "?") + "ts=" + Date.now(), {cache:"no-store"});
+    if (!r.ok) throw new Error(r.status);
+    const raw = await r.json();
     state.data = prepare(raw);
     initSel();
     const today = berlinNow().date;
