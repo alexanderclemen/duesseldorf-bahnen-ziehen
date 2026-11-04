@@ -12,6 +12,8 @@ die öffentlichen **Belegungspläne der Bädergesellschaft Düsseldorf** und zei
 - **Nur 50-m-Bahnen**, wenn das Rheinbad 50 laut Plan auf 50 m läuft (montags, mittwochs und
   freitags von 8 bis 14 Uhr sind es 25-m-Bahnen).
 
+**Online:** <https://alexanderclemen.github.io/duesseldorf-bahnen-ziehen/>
+
 ![Screenshot](docs/screenshot.png)
 
 > Kein offizielles Angebot und ohne Verbindung zur Bädergesellschaft Düsseldorf. Die Daten stammen
@@ -40,6 +42,18 @@ die öffentlichen **Belegungspläne der Bädergesellschaft Düsseldorf** und zei
   - Montags nur Seniorenschwimmen, 11–14 Uhr
 
   Ändern sich diese Zeiten auf der Website, müssen die Regeln von Hand angepasst werden.
+
+## Als GitHub-Seite (ohne eigenen Server)
+
+`.github/workflows/pages.yml` ruft die Pläne alle 30 Minuten ab und veröffentlicht die Seite auf
+GitHub Pages. Den Verlauf für die Prognose speichert der Workflow im Branch `data`. Er committet
+nur, wenn sich ein Plan geändert hat. In einem Fork einmal einstellen:
+
+1. *Settings → Pages → Build and deployment → Source:* **GitHub Actions**
+2. *Actions →* Workflow **Pages** → **Run workflow** (danach läuft er von selbst)
+
+GitHub führt geplante Läufe manchmal verspätet aus. Ist der Stand älter als zwei Stunden, zeigt die
+Seite einen Hinweis.
 
 ## Installation (Debian / Ubuntu mit systemd)
 
